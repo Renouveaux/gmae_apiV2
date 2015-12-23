@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h2 style="padding:0; font-family:Arial, Helvetica, sans-serif; font-size:15px; line-height:17pt; color:#39434d; font-weight:lighter; margin-top:0; margin-bottom:10px !important;">
+	Bonjour,
+</h2>
+<p>
+	vous trouverez ci-joint une nouvelle commande <b>« MG0/{{cpage}} »</b> pour la location d’un matelas à air Modena.
+</p>
+<p>
+	Ce matelas destiné à <b>« {{civility}} {{patientName}} »</b> est à livrer dans le service : <b>« {{serviceName}} »</b>.
+</p>
+<p>
+	Ne pas oublier d’indiquer sur le bon de livraison, le n° de série ou de prêt du matériel livré
+</p> 
+{%if message %}
+<p>
+	<h3>Information suplémentaire</h3>
+</p>
+<p>
+	<i>{{message}}</i>
+</p>
+{% endif %}
+
+{% endblock %}

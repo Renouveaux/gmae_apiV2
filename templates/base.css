@@ -1,0 +1,32 @@
+body {
+    margin:0;
+    padding:0;
+    background-color:#eeeeee;
+    color:#494949;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    -webkit-text-size-adjust: none;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    color:#39434d !important;
+    margin-bottom:10px !important;
+  }
+  a, a:link, a:visited {
+    color:#777777;
+    text-decoration:none;
+    border-bottom:1px #777777 dotted;
+  }
+  a:hover, a:active {
+    text-decoration:none;
+    color:#0f79aa !important;
+    border-bottom:1px #0f79aa dotted !important;
+  }
+  img {
+    border:0;
+  }
+  /*Hotmail and Yahoo specific code*/
+  .ReadMsgBody { width: 100%;}
+  .ExternalClass {width: 100%;}
+  .yshortcuts { color: #494949 }
+  .yshortcuts a span { color: #777777 }
+  /*Hotmail and Yahoo specific code*/
