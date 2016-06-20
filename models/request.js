@@ -17,7 +17,9 @@ var schema = module.exports = new mongoose.Schema({
 	renters: {type: mongoose.Schema.Types.ObjectId, ref: 'Renters'},
 	hire: {type: mongoose.Schema.Types.ObjectId, ref: 'Hire'},
 	dateEnd: { type: Date }, 
-	canceled: { type: Boolean, default: false}
+	canceled: { type: Boolean, default: false},
+	lastModified: { type: Date },
+	recoveryAsk: { type : Date }
 });
 
 schema.plugin(deepPopulate);

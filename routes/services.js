@@ -5,7 +5,6 @@ var config = require('../config').get();
 
 module.exports = function (app, logger) {
 
-
 	/**
 	* Return the list of Services
 	*
@@ -15,6 +14,7 @@ module.exports = function (app, logger) {
 	*/
 	function getServices(req, res, next){
 
+		
 		Services.find(function(err, data){
 			if(err){
 				console.log(err);
@@ -23,7 +23,20 @@ module.exports = function (app, logger) {
 				return next(new restify.InternalError(errObj));
 			}else{
 				Slipcovers.deepPopulate(data, 'slipcoverProperties, states', function (err, services) {
+
+					if(req.user.privilege != 4){
+						services = services.filter(function (el) {
+							return el.name !== "Biomédical";
+						});
+					}
+
+					services = services.filter(function (el) {
+						return el.name !== "Gmae";
+					});
+
 					res.send(services);
+
+
 				});
 			}
 		});

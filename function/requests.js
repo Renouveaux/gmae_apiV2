@@ -107,7 +107,7 @@ var mongoose = require('mongoose')
 				});
 			};
 		});
-};
+	};
 
 
 	// Créer une nouvelle requete (demande)
@@ -225,8 +225,8 @@ var mongoose = require('mongoose')
 					res.json(data);
 				}
 			});
-}
-}
+		}
+	}
 
 	// TODO
 	// Sortir les appels direct à Engines et Slipcover pour appel des fn de routage
@@ -234,7 +234,6 @@ var mongoose = require('mongoose')
 
 		var query = req.params;	
 		var obj = query.value;
-
 
 		if(typeof query.state !== "undefined"){
 			states.getFnStatesByValue(query.state, function(err, data){	
@@ -282,7 +281,12 @@ var mongoose = require('mongoose')
 
 		function updateRequest(){
 			Requests.findByIdAndUpdate(query.id,{
-				$set: obj
+				$currentDate: {
+					lastModified: true,
+					"lastModified": { $type: "date" }
+				},
+				$set: obj,
+				dateEnd: Date.now()
 			}, function(err){
 				if(err){
 					res.send(400);

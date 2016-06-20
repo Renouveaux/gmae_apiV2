@@ -33,6 +33,4 @@ module.exports = function (app, logger) {
 	app.put(config.api_url + '/hire/:id', request.putDelivery);
 
 
-
-
 }
