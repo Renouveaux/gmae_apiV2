@@ -107,25 +107,47 @@ var t = [
 	 	var year = req.params.year;
 
 	 	Request.find({
-	 		"date": {'$gte': new Date(year+'-01-01T00:00:00.000Z'), '$lt': new Date(year+'-12-31T23:59:59.999Z')},
-	 		"hire" : {'$eq' : null}
+	 		"date": {'$gte': new Date(year+'-01-01T00:00:00.000Z')},
+	 		"dateEnd": {'$lt': new Date(year+'-12-31T23:59:59.999Z')}
 	 	}, function(err, d){
 
 	 		var r = d.map(function(obj){ 
-
-	 			var day = Math.round((obj.dateEnd-obj.date)/(1000*60*60*24));
-
-	 			//console.log(obj)
 	 			var rObj = {};
-	 			rObj['engines'] = obj.engines; 
-	 			rObj['day'] = day;
+	 			rObj['_id'] = obj._id
+	 			rObj['label'] = obj.engines.label; 
+	 			rObj['day'] = Math.round((obj.dateEnd.getTime()-obj.date.getTime())/(1000*60*60*24));
 	 			rObj['date'] = obj.date
-	 			//return rObj;
-
-	 			console.log(rObj)
+	 			return rObj;
 	 		});
+	 		
+	 		var seen = {};
 
-			res.send(r)
+	 		r = r.filter(function(entry) {
+	 			var previous;
+
+    			// Have we seen this label before?
+    			if (seen.hasOwnProperty(entry.label)) {
+        			// Yes, grab it and do addition of day
+        			previous = seen[entry.label];
+        			previous.total = Math.round(previous.total + entry.day);
+
+        			// Don't keep this entry, we've merged it into the previous one
+        			return false;
+        		}
+
+    			// entry.total probably isn't exist; make it one for consistency
+    			if (!Array.isArray(entry.total)) {
+    				entry.total = "";
+    			}
+
+    			// Remember that we've seen it
+    			seen[entry.label] = entry;    			
+
+   				// Keep this one, we'll merge any others that match into it
+   				return true;
+   			});
+
+	 		res.send([seen])
 
 	 	}).populate('engines', 'label');
 

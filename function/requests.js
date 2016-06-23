@@ -234,11 +234,15 @@ var mongoose = require('mongoose')
 
 		var query = req.params;	
 		var obj = query.value;
-
+		
 		if(typeof query.state !== "undefined"){
 			states.getFnStatesByValue(query.state, function(err, data){	
 				if(typeof obj == 'undefined'){	
-					obj = { states : data._id };
+					if(typeof query.recoveryAsk === 'undefined'){
+						obj = { states : data._id, dateEnd: query.dateEnd };
+					}else{
+						obj = { states : data._id, recoveryAsk: query.recoveryAsk };						
+					}
 					next(updateRequest());
 				}else{	
 					obj.states = data._id;
@@ -280,13 +284,13 @@ var mongoose = require('mongoose')
 		}
 
 		function updateRequest(){
+			console.log(query.id)
 			Requests.findByIdAndUpdate(query.id,{
 				$currentDate: {
 					lastModified: true,
 					"lastModified": { $type: "date" }
 				},
-				$set: obj,
-				dateEnd: Date.now()
+				$set: obj
 			}, function(err){
 				if(err){
 					res.send(400);
