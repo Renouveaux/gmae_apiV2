@@ -107,11 +107,27 @@ var t = [
 	 	var year = req.params.year;
 
 	 	Request.find({
-	 		"date": {'$gte': new Date(year+'-01-01T00:00:00.000Z')},
-	 		"dateEnd": {'$lt': new Date(year+'-12-31T23:59:59.999Z')}
+	 		"dateEnd": {'$gt': new Date(year+'-01-01T00:00:00.000Z')},
+	 		"date": {'$lt': new Date(year+'-12-31T23:59:59.999Z')}
 	 	}, function(err, d){
 
+	 		// Enlève des statistiques le moteur de test
+	 		d = d.filter(function(el){
+	 			return el.engines.label !== '99';
+	 		})
+
 	 		var r = d.map(function(obj){ 
+	 			var dateIn = new Date(obj.date)
+	 			var dateOut = new Date(obj.dateEnd)
+
+	 			if(new Date('01/01/'+year).getTime() >= dateIn.getTime()){
+	 				obj.date = new Date('01/01/'+year)
+	 			}
+
+	 			if(dateOut.getTime() >= new Date('12/31/'+year).getTime()){
+	 				obj.dateEnd = new Date('12/31/'+year)
+	 			}
+
 	 			var rObj = {};
 	 			rObj['_id'] = obj._id
 	 			rObj['label'] = obj.engines.label; 
