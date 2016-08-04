@@ -22,8 +22,6 @@ month[9] = 0;
 month[10] = 0;
 month[11] = 0;
 
-
-
 var t = [
 {
 	name : "Total",
@@ -92,14 +90,9 @@ var t = [
 	 			}else{
 	 				C[2].data[n]++;
 	 			}
-
 	 		})
-
 	 		res.send(C)
-
 	 	})
-
-
 	 }
 
 	 exports.getRateYear = function(req, res, next){
@@ -166,8 +159,17 @@ var t = [
 	 		res.send([seen])
 
 	 	}).populate('engines', 'label');
+	 }
 
 
+	 exports.getServiceDistribution = function(req, res, next){
 
+	 	var year = req.params.year;
 
+	 	Request.find({
+	 		"dateEnd": {'$gt': new Date(year+'-01-01T00:00:00.000Z')},
+	 		"date": {'$lt': new Date(year+'-12-31T23:59:59.999Z')}
+	 	}, function(err, d){
+
+	 	});
 	 }
